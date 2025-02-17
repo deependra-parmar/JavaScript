@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XMLHttpRequest</title>
+</head>
+
+<body style="background-color: #292929; color: white;">
+    <input type="text" placeholder="@Github Username" id="input"> <br>
+    <img width="200" id="image" alt="">
+    <p type="text" id="username"></p>
+    <p id="follower_count"></p>
+    <button onclick="getMyData()">Get My Data</button>
+
+</body>
+<script>
+    const getMyData = () => {
+        const username = document.getElementById('input').value;
+        let image = document.getElementById('image');
+        let name = document.getElementById('username');
+        let follower_count = document.getElementById('follower_count');
+        const requestURL = `https://api.github.com/users/${username}`;
+
+        const httpRequest = new XMLHttpRequest();
+        httpRequest.open('GET', requestURL);
+
+        httpRequest.onload = () => {
+            if (httpRequest.readyState == httpRequest.DONE){
+                let response = JSON.parse(httpRequest.responseText);
+                console.log(response);
+                image.setAttribute('src', response.avatar_url);
+                name.innerText = `Username: ${response.login}`;
+                follower_count.innerText = `Followers: ${response.followers}`;
+            }
+        }
+
+        httpRequest.send();
+    }
+</script>
+
+</html>
